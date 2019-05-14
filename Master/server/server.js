@@ -1,7 +1,3 @@
-/**
- * Project 3 Starter
- * UNC Charlotte Full-Stack Coding Bootcamp
- */
 
 //-- .env --------------------------------------------------------------------
 const path = require('path');
@@ -16,6 +12,7 @@ const express = require('express');
 const logger = require('morgan');
 
 const { passport } = require('./lib/passport');
+
 
 //-- Constants ---------------------------------------------------------------
 const PORT = process.env.PORT || 3001;
@@ -44,11 +41,21 @@ app.use(require('./controllers'));
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
+//--Socket Server-------------------------------------------------------------
 
+var io = require('socket.io').listen(3011);
+io.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
+});
 //-- Main --------------------------------------------------------------------
 app.listen(PORT, () => {
   console.log(`🚀 Server listening on port ${PORT}...`);
 });
+
+
 
 //-- Export to Tests ---------------------------------------------------------
 module.exports = app;
