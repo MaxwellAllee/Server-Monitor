@@ -42,11 +42,9 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
 
+//--os-----------------------------------------------------------------------------
+var osStats = require('./controllers/');
 
-//-- Main --------------------------------------------------------------------
-app.listen(PORT, () => {
-  console.log(`🚀 Server listening on port ${PORT}...`);
-});
 //--Socket Client-------------------------------------------------------------
 var io = require('socket.io-client');
 var socket = io.connect("http://localhost:3011/", {
@@ -57,5 +55,15 @@ socket.on('news', function (data) {
   console.log(data);
   socket.emit('my other event', { my: 'data' });
 });
+
+
+var OsChecker = require("./lib/OSchecker/checker.js");
+var osInfo=OsChecker()
+console.log(osInfo)
 //-- Export to Tests ---------------------------------------------------------
 module.exports = app;
+
+//-- Main --------------------------------------------------------------------
+app.listen(PORT, () => {
+  console.log(`🚀 Server listening on port ${PORT}...`);
+});
