@@ -55,7 +55,7 @@ checkItOut = () => {
 checkItOut()
 //--Socket Client-------------------------------------------------------------
 var io = require('socket.io-client');
-var socket = io.connect("http://localhost:3011/", {
+var socket = io.connect(`http://${process.env.masterIP}:3011/`, {
   reconnection: true
 });
 
