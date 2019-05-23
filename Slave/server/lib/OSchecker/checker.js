@@ -1,22 +1,30 @@
-const os = require('os');
-var getos = require('getos')
+const cpuStatic = require('./cpustatic')
+const cpuUsage = require('./cpuUsage')
+const memUsage = require('./memUsage')
+const network = require('./network')
+const staticCheckList = ["cpu", "system","osInfo"]
+let staticData = []
+'use strict'
+let firstRun = true
 osChecker = () => {
-    let info = {
-        plat: os.platform(),
-        arch: os.arch(),
-        uptime: (((os.uptime()/60)/60)/24+" days"),
-        freemem: os.freemem()/1000000000,
-        totalmem: os.totalmem()/1000000000,
-        usedmem: (os.totalmem() - os.freemem())/10000000000,
-        test: getos(function(e,os) {
-            if(e) return console.log(e)
-            console.log("Your OS is:" +JSON.stringify(os))
-          }),
-        address: os.address
+    const staticChecks = () => {
+        if (firstRun) {
+            staticCheckList.forEach(process => {
+                cpuStatic(process).then((results) => {
+                    staticData[process] = results
+                })
+            });
+            if (staticData.length === staticCheckList.length) { return staticData }
+        }
+        else  return {static : staticData}
     }
 
-
-    return info
+    let somePromise = Promise.all([staticChecks(),network(firstRun), cpuUsage(), memUsage()]).then(function (values) {
+        firstRun = false
+         const returnObj= {static:{system :values[0].static.system, cpu : values[0].static.cpu, os : values[0].static.osInfo, network : values},dynamic :{cores : values[2],memory:values[3]} }
+        return returnObj
+    });
+    return somePromise
 }
 
 module.exports = osChecker;

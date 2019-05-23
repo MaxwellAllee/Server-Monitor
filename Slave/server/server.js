@@ -1,6 +1,7 @@
 
 //-- .env --------------------------------------------------------------------
 const path = require('path');
+require('dotenv').config()
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config({
     path: path.resolve(__dirname, '.env')
@@ -41,28 +42,47 @@ app.use(require('./controllers'));
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
-
-//--os-----------------------------------------------------------------------------
-var osStats = require('./controllers/');
-
+//--Checker-------------------------------------------------------------------
+let compData = {}
+const OsChecker = require("./lib/OSchecker/checker.js");
+checkItOut = () => {
+  OsChecker().then(function (data) {
+    // console.log('\033[2J',data)
+    compData = data
+    // testing()
+  })
+}
+checkItOut()
 //--Socket Client-------------------------------------------------------------
 var io = require('socket.io-client');
 var socket = io.connect("http://localhost:3011/", {
-    reconnection: true
+  reconnection: true
 });
 
+refreshRate = 1
+whoAmI = process.env.WHOAMI
+console.log("I am", whoAmI)
 socket.on('news', function (data) {
   console.log(data);
-  socket.emit('my other event', { my: 'data' });
+  let count = 0
+  sendinfo = () => {
+    console.log("sending")
+    count++
+    OsChecker().then((data) => {
+      socket.emit('my other event', { [whoAmI]: data, count: count });
+    })
+    setTimeout(sendinfo,refreshRate*1000)
+  }
+  sendinfo()
 });
 
 
-var OsChecker = require("./lib/OSchecker/checker.js");
-var osInfo=OsChecker()
-console.log(osInfo)
-//-- Export to Tests ---------------------------------------------------------
-module.exports = app;
 
+
+// testing =()=>{
+//   console.log("data",compData)
+//   setTimeout(checkItOut,1000)
+// }
 //-- Main --------------------------------------------------------------------
 app.listen(PORT, () => {
   console.log(`🚀 Server listening on port ${PORT}...`);
