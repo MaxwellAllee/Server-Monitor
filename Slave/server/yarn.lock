@@ -626,10 +626,10 @@ statuses@~1.4.0:
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.4.0.tgz#bb73d446da2796106efcc1b601a253d6c46bd087"
   integrity sha512-zhSCtt8v2NDrRlPQpCNtw/heZLtfUDqxBM1udqikb/Hbk52LK4nQSwr10u77iopCW5LsyHpuXS0GnEc48mLeew==
 
-systeminformation@^4.4.1:
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/systeminformation/-/systeminformation-4.4.1.tgz#38b99489f7c489592b22aafe2ecd866b966b4338"
-  integrity sha512-rZhqXp8+Scjb7e9w68WwgiagHDrTU0hiIXHPb9eystJMymrSxC43ibtAps1afjyB+zymrdaa92z//9Nl6f9sDg==
+systeminformation@^5.3.1:
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/systeminformation/-/systeminformation-5.3.1.tgz#72755645a982fbb9367736518ac4e5d91f5a49e1"
+  integrity sha512-1xG+6xfKXSowtZsAlUp6jVaV0q+5rq9yUN+ds6Hp2dR3/EdEU5r0v74qi5YF8BCGZfmddiOwDNB0h7ge70fmYA==
 
 to-array@0.1.4:
   version "0.1.4"
